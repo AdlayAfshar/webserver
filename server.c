@@ -238,6 +238,67 @@ int main()
                 write(client_fd, not_found, strlen(not_found));
             }
         }
+        else if (strcmp(method, "DELETE") == 0 && strcmp(path, "/cart") == 0)
+        {
+            cart_count = 0;
+
+            char *response =
+                "HTTP/1.1 200 OK\r\n"
+                "Content-Type: application/json\r\n"
+                "\r\n"
+                "{\"message\":\"cart cleared\"}";
+
+            write(client_fd, response, strlen(response));
+        }
+        else if (strcmp(method, "DELETE") == 0 && strncmp(path, "/cart/", 6) == 0)
+        {
+            int product_id;
+            int i;
+            int j;
+            int found;
+
+            product_id = atoi(path + 6);
+            found = 0;
+
+            i = 0;
+            while (i < cart_count)
+            {
+                if (cart[i].product_id == product_id)
+                {
+                    j = i;
+                    while (j < cart_count - 1)
+                    {
+                        cart[j] = cart[j + 1];
+                        j++;
+                    }
+                    cart_count--;
+                    found = 1;
+                    break;
+                }
+                i++;
+            }
+
+            if (found)
+            {
+                char response[200];
+                sprintf(response,
+                    "HTTP/1.1 200 OK\r\n"
+                    "Content-Type: application/json\r\n"
+                    "\r\n"
+                    "{\"message\":\"item removed\",\"product_id\":%d}",
+                    product_id);
+                write(client_fd, response, strlen(response));
+            }
+            else
+            {
+                char *response =
+                    "HTTP/1.1 404 Not Found\r\n"
+                    "Content-Type: application/json\r\n"
+                    "\r\n"
+                    "{\"error\":\"item not found\"}";
+                write(client_fd, response, strlen(response));
+            }
+        }
         else
         {
             char *response =
