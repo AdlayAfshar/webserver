@@ -32,11 +32,21 @@ int main()
         // parse method + path
         char method[10];
         char path[100];
+        char harchi[100];
+        char harchi2[100];
 
-        sscanf(buffer, "%s %s", method, path);
+        printf("==================================\n");
+        printf("Buffer:\n");
+        printf("==================================\n");
+        printf("%s\n", buffer);
+        printf("----------------------------------\n");
+
+        sscanf(buffer, "%s %s %s %s", method, path, harchi, harchi2);
 
         printf("Method: %s\n", method);
         printf("Path: %s\n", path);
+        printf("harchi: %s\n", harchi);
+        printf("harchi2: %s\n", harchi);
 
         char *body = strstr(buffer, "\r\n\r\n");
 
@@ -45,6 +55,7 @@ int main()
             body += 4; // رد شدن از \r\n\r\n
             printf("Body: %s\n", body);
         }
+
 
         if (strcmp(method, "GET") == 0 && strcmp(path, "/health") == 0)
         {
@@ -68,13 +79,32 @@ int main()
         }
         else if (strcmp(method, "POST") == 0 && strcmp(path, "/cart") == 0)
         {
-            char *response =
+            int product_id = -1;
+
+            if (body)
+            {
+                sscanf(body, "{\"product_id\":%d}", &product_id);
+                printf("Product ID: %d\n", product_id);
+            }
+
+            char response[200];
+
+            sprintf(response,
                 "HTTP/1.1 200 OK\r\n"
                 "Content-Type: application/json\r\n"
                 "\r\n"
-                "{\"message\":\"added to cart\"}";
+                "{\"message\":\"added\",\"product_id\":%d}",
+                product_id
+            );
 
             write(client_fd, response, strlen(response));
+            // char *response =
+            //     "HTTP/1.1 200 OK\r\n"
+            //     "Content-Type: application/json\r\n"
+            //     "\r\n"
+            //     "{\"message\":\"added to cart\"}";
+
+            // write(client_fd, response, strlen(response));
         }
         else
         {
