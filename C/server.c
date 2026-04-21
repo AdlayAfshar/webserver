@@ -135,6 +135,15 @@ int main()
 
             write(client_fd, response, strlen(response));
         }
+        // if (strcmp(method, "GET") == 0 && strcmp(path, "/products") == 0)
+        // {
+        //     char *response =
+        //         "HTTP/1.1 200 OK\r\n"
+        //         "Content-Type: application/json\r\n"
+        //         "\r\n"
+        //         "[{\"id\":1,\"name\":\"Shoes\"}]";
+        //     write(client_fd, response, strlen(response));
+        // }
         else if (strcmp(method, "GET") == 0 && strcmp(path, "/products") == 0)
         {
             char response[5000];
@@ -161,6 +170,11 @@ int main()
                 i++;
             }
             len += sprintf(response + len, "]");
+            // char *response =
+            //     "HTTP/1.1 200 OK\r\n"
+            //     "Content-Type: application/json\r\n"
+            //     "\r\n"
+            //     "[{\"id\":1,\"name\":\"Shoes\"}]";
 
             write(client_fd, response, strlen(response));
         }
