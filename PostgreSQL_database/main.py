@@ -30,9 +30,28 @@ def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)
     return new_product
 
 # 📄 Read (list)
+# @app.get("/products")
+# def get_products(db: Session = Depends(get_db)):
+#     return db.query(models.Product).all()
 @app.get("/products")
-def get_products(db: Session = Depends(get_db)):
-    return db.query(models.Product).all()
+def get_products(
+    skip: int = 0,
+    limit: int = 10,
+    min_price: int = 0,
+    name: str = "",
+    db: Session = Depends(get_db)
+):
+    query = db.query(models.Product)
+
+    if min_price:
+        query = query.filter(models.Product.price >= min_price)
+
+    if name:
+        query = query.filter(models.Product.name.contains(name))
+
+    products = query.offset(skip).limit(limit).all()
+
+    return products
 
 # 🔍 Read (single)
 @app.get("/products/{id}")
