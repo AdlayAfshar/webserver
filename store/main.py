@@ -21,7 +21,7 @@ def create_product(product: ProductCreate):
 
     return new_product
 
-@app.get("/products", response_model=list[Product])
+@app.get("/products", operation_id="getProducts", response_model=list[Product])
 def get_products():
     return products
 
