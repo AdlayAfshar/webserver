@@ -11,6 +11,11 @@ class Product(BaseModel):
     price: float
     in_stock: int
 
+# این خط:
+# class Product(BaseModel):
+# اینجا تو فقط یک کلاس نساختی.
+# تو داری تعریف می‌کنی: بدنه درخواست باید این شکلی باشد
+# بدنه درخواست = (body)
 
 # ---------- Fake Database ----------
 products = []

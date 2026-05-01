@@ -29,8 +29,8 @@ class ProductResponse(BaseModel):
     class Config:
         from_attributes = True
 
-# * ProductCreate → فقط برای ورودی
-# * ProductResponse → فقط برای خروجی
+# ProductCreate → فقط برای ورودی
+# ProductResponse → فقط برای خروجی
 
 # و این خط:
 # from_attributes = True
@@ -54,6 +54,8 @@ SessionLocal = sessionmaker(
 )
 
 Base = declarative_base()
+# Base
+# همه مدل‌های دیتابیس از این ساخته می‌شوند.
 
 # ---------- Model ----------
 class Product(Base):
@@ -88,6 +90,7 @@ def get_product_by_id(db: Session, product_id: int):
     ).first()
 # --------------------------
 Base.metadata.create_all(bind=engine)
+# .این خط می‌گوید:  اگر جدول‌ها هنوز وجود ندارند، بسازشان
 
 def get_db():
     db = SessionLocal()

@@ -14,8 +14,8 @@ class ProductCreate(BaseModel):
 class Product(ProductCreate):
     id: int
 
-# * ProductCreate → چیزی که کاربر اجازه داره بفرسته
-# * Product → چیزی که سرور اجازه داره برگردونه
+# ProductCreate → چیزی که کاربر اجازه داره بفرسته
+# Product → چیزی که سرور اجازه داره برگردونه
 
 # ---------- Fake Database ----------
 products = []
